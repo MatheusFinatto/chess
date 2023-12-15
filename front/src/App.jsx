@@ -50,18 +50,35 @@ export default function PlayRandomMoveEngine() {
       </>
     );
 
+  async function calculateMove() {
+    fetch("http://localhost:5000/move", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fen: game.fen() }),
+    }).then((response) => {
+      console.log(
+        "🚀 ~ file: App.jsx:61 ~ calculateMove ~ response:",
+        response
+      );
+
+      response.json().then((data) => {
+        console.log("🚀 ~ file: App.jsx:67 ~ response.json ~ data:", data);
+        safeGameMutate((game) => {
+          game.move(data.move);
+        });
+      });
+    });
+  }
+
   function makeMove() {
     const possibleMoves = game.moves();
 
-    // exit if the game is over
     if (game.game_over() || game.in_draw() || possibleMoves.length === 0)
       return;
-    //change this random index for the correct input
-    const randomIndex = Math.floor(Math.random() * possibleMoves.length);
 
-    safeGameMutate((game) => {
-      game.move(possibleMoves[randomIndex]);
-    });
+    calculateMove();
   }
 
   function onDrop(sourceSquare, targetSquare, piece) {
