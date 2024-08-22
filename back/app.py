@@ -64,7 +64,7 @@ def get_best_move(fen, depth=3):
             best_value = board_value
             best_move = move
     
-    return best_move.uci() if best_move else None
+    return board.san(best_move) if best_move else None
 
 @app.route('/move', methods=['POST'])
 def get_move():
