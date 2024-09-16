@@ -1,10 +1,22 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import chess
-from helpers.evaluations import *
+from evaluations import *
 
 app = Flask(__name__)
 CORS(app)
+
+def piece_value(piece):
+    values = {
+        chess.PAWN: 100,
+        chess.KNIGHT: 320,
+        chess.BISHOP: 330,
+        chess.ROOK: 500,
+        chess.QUEEN: 900,
+        chess.KING: 20000  
+    }
+
+    return values[piece.piece_type] if piece.color == chess.WHITE else -values[piece.piece_type]
 
 def piece_square_value(piece, square):
     """Get the value of a piece on a given square based on piece-square tables."""
@@ -42,17 +54,7 @@ def evaluate_board(board):
     return score
 
 
-def piece_value(piece):
-    values = {
-        chess.PAWN: 100,
-        chess.KNIGHT: 320,
-        chess.BISHOP: 330,
-        chess.ROOK: 500,
-        chess.QUEEN: 900,
-        chess.KING: 20000  
-    }
 
-    return values[piece.piece_type] if piece.color == chess.WHITE else -values[piece.piece_type]
 
 def minimax(board, depth, alpha, beta, maximizing_player):
     if depth == 0 or board.is_game_over():
