@@ -91,14 +91,6 @@ def compare_with_stockfish(board, depth):
     result = engine.play(board, chess.engine.Limit(depth=depth))
     return result.move
 
-
-
-
-
-
-
-
-
 ## 5. Exploração de Aberturas (Biblioteca de Aberturas)
 
 opening_book = {
