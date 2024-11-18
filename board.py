@@ -1,6 +1,4 @@
-import pygame
 from pieces import *
-from setting import Config, sounds
 from tools import Position, OnBoard
 import math
 from Fen import *
@@ -11,7 +9,6 @@ class Board:
         self.player = 0
         self.historic = []
         self.moveIndex = 1
-        self.font = pygame.font.SysFont("Consolas", 18, bold=True)
         self.grid = FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
         self.WhiteKing = None
         self.BlackKing = None
@@ -226,7 +223,7 @@ class Board:
             rook.previousMove = self.moveIndex - 1
             self.grid[rook.position.x][rook.position.y] = rook
             self.historic[-1][2] = king.code + " C"
-            sounds.castle_sound.play()
+
 
     def PromotePawn(self, pawn, choice):
         if choice == 0:

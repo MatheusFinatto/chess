@@ -16,15 +16,18 @@ class Minimax(object):
         currentPiece = None
         isMaximizer = False
         # check if the player is maximizer
-        if self.board.player == 1:
+        if self.board.turn:
             isMaximizer = True
         else:
             isMaximizer = False
 
         if isMaximizer == False:
             bestScore *= (-1)
+
+        print(self.board)
+
         # get All the possible move in the current Position
-        for pieces in self.board.grid:
+        for pieces in self.board:
             for piece in pieces:
                 if piece != None and piece.color == self.board.player:
                     moves, captures = self.board.GetAllowedMoves(piece, True)

@@ -1,14 +1,12 @@
 from pieces.base import Piece
 from tools import OnBoard, Position
-from setting import Config
-from utils import GetSprite
+
 
 class Pawn(Piece):
     def __init__(self, position, color):
         super().__init__(position, color)
         self.code = "p"
         self.value = 10 if color == 0 else -10
-        self.sprite = GetSprite(self)
         self.previousMove = None
         self.pieceMap = []
 

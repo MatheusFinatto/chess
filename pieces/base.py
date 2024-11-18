@@ -1,4 +1,3 @@
-from utils import *
 from tools import Position, OnBoard
 
 class Piece:
