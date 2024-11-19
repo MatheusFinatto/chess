@@ -6,7 +6,7 @@ import os
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from common import minimax, DEPTH
+from common import minimax_root, DEPTH
 
 
 app = Flask(__name__)
@@ -14,8 +14,7 @@ CORS(app)
 
 def find_best_move(fen):
     board = chess.Board(fen)
-    print(board.turn)
-    _, best_move = minimax(DEPTH, board, -float("inf"), float("inf"), board.turn)
+    best_move = minimax_root(DEPTH, not board.turn, board)
     return board.san(best_move)
 
 
