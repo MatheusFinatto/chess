@@ -43,5 +43,5 @@ while True:
             delay_performed = True
             time.sleep(11)
         move = scholars_mate[move_count]
-        send_command(f"bestmove {move}")
+        send_command(f"best_move {move}")
         just_started = False

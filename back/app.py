@@ -1,22 +1,29 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import chess
 import sys
 import os
+import chess
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from common import minimax, DEPTH
 
+depth = 3
 
 app = Flask(__name__)
 CORS(app)
 
+from screens.chess import Chess
+
+
+
 def find_best_move(fen):
+    engine = Chess()
+    engine.set_fen(fen)
     board = chess.Board(fen)
-    print(board.turn)
-    _, best_move = minimax(DEPTH, board, -float("inf"), float("inf"), board.turn)
-    return board.san(best_move)
+    _, best_move = engine.vsComputer()
+    print("best",best_move)
+    if best_move is not None:
+        return board.san(best_move)
 
 
 @app.route('/move', methods=['POST'])
