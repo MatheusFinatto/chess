@@ -1,5 +1,5 @@
 from pieces import *
-from tools import Position, OnBoard
+from tools import Position
 import math
 from Fen import *
 
@@ -10,8 +10,17 @@ class Board:
         self.historic = []
         self.moveIndex = 1
         self.grid = FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR")
+        
         self.WhiteKing = None
         self.BlackKing = None
+        self.checkWhiteKing = False
+        self.checkBlackKing = False
+
+        self.winner = None
+        self.pieceToPromote = None
+        self.whitePromotions = [Queen(Position(0, 0), 0), Bishop(Position(0, 1), 0), Knight(Position(0, 2), 0), Rook(Position(0, 3), 0)]
+        self.blackPromotions = [Rook(Position(0, 7), 1), Knight(Position(0, 6), 1), Bishop(Position(0, 5), 1), Queen(Position(0, 4), 1)]
+
         for pieces in self.grid:
             for piece in pieces:
                 if piece != None:
@@ -20,48 +29,10 @@ class Board:
                     elif piece.color == 1 and piece.code == "k":
                         self.BlackKing = piece
 
-        # place pieces on the chess board
-        # -- place all the pawns
-        # for x in range(Config.boardSize):
-        #     for y in range(Config.boardSize):
-        #         if y == 1:
-        #             # place black pawns
-        #             self.grid[x][y] = Pawn(Position(x, y), 1)
-        #
-        #         elif y == 6:
-        #             # place white pawns
-        #             self.grid[x][y] = Pawn(Position(x, y), 0)
 
-        # self.WhiteKing = King(Position(4, 7), 0)
-        # self.BlackKing = King(Position(4, 0), 1)
-        self.checkWhiteKing = False
-        self.checkBlackKing = False
-
-        # -- black pieces
-        # self.grid[0][0] = Rook(Position(0, 0), 1)
-        # self.grid[7][0] = Rook(Position(7, 0), 1)
-        # self.grid[1][0] = Knight(Position(1, 0), 1)
-        # self.grid[6][0] = Knight(Position(6, 0), 1)
-        # self.grid[2][0] = Bishop(Position(2, 0), 1)
-        # self.grid[5][0] = Bishop(Position(5, 0), 1)
-        # self.grid[3][0] = Queen(Position(3, 0), 1)
-        # self.grid[4][0] = self.BlackKing
-        # -- white pieces
-        # self.grid[0][7] = Rook(Position(0, 7), 0)
-        # self.grid[7][7] = Rook(Position(7, 7), 0)
-        # self.grid[1][7] = Knight(Position(1, 7), 0)
-        # self.grid[6][7] = Knight(Position(6, 7), 0)
-        # self.grid[2][7] = Bishop(Position(2, 7), 0)
-        # self.grid[5][7] = Bishop(Position(5, 7), 0)
-        # self.grid[3][7] = Queen(Position(3, 7), 0)
-        # self.grid[4][7] = self.WhiteKing
-
-        self.winner = None
-        self.pieceToPromote = None
-
-        self.whitePromotions = [Queen(Position(0, 0), 0), Bishop(Position(0, 1), 0), Knight(Position(0, 2), 0), Rook(Position(0, 3), 0)]
-        self.blackPromotions = [Rook(Position(0, 7), 1), Knight(Position(0, 6), 1), Bishop(Position(0, 5), 1), Queen(Position(0, 4), 1)]
-
+    def set_fen(self, fen):
+        self.grid = FEN(fen)
+    
     def Forfeit(self):
         # resign
         pass
@@ -105,6 +76,7 @@ class Board:
         return allowed_moves, allowed_captures
 
     def Move(self, piece, position):
+        print(piece, position)
         if position != None:
             position = position.GetCopy()
             # print(position)

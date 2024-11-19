@@ -1,6 +1,5 @@
-from Minimax.PointMap import PieceMap
+from Minimax.PointMap import  PieceMap
 from pieces import Pawn
-
 
 class Minimax(object):
     def __init__(self, depth, board, AlphBetaPruning=True, UsePointMaps=True):
@@ -11,23 +10,22 @@ class Minimax(object):
 
     def Start(self, depth):
         bestMove = None
-        # bestScore = -math.inf
         bestScore = -9999
         currentPiece = None
         isMaximizer = False
         # check if the player is maximizer
-        if self.board.turn:
+        print("player", self.board.player)
+        if self.board.player == 1:
             isMaximizer = True
         else:
             isMaximizer = False
 
         if isMaximizer == False:
             bestScore *= (-1)
-
-        print(self.board)
-
         # get All the possible move in the current Position
-        for pieces in self.board:
+        print("depth", depth)
+        for pieces in self.board.grid:
+            print(pieces)
             for piece in pieces:
                 if piece != None and piece.color == self.board.player:
                     moves, captures = self.board.GetAllowedMoves(piece, True)

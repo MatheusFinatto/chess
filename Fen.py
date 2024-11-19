@@ -1,6 +1,4 @@
 from pieces import *
-from utils import *
-from setting import Config
 from tools import Position
 
 def GetFenPieces(character, x, y):
@@ -27,25 +25,26 @@ def GetFenPieces(character, x, y):
 
 # The fen notation function return a grid of the formated Position
 def FEN(positionstring):
-    # initialize empty grid
-    boardGrid = [[None for i in range(Config.boardSize)] for j in range(Config.boardSize)]
-    # handle first field , placement of pieces
+    boardSize = 8
+    boardGrid = [[None for _ in range(boardSize)] for _ in range(boardSize)]
     row = 0
     col = 0
+
+    positionstring = positionstring.split()[0]
+
     for character in positionstring:
-        piece = GetFenPieces(character, row, col)
-        if piece:
-            boardGrid[row][col] = piece
-            row +=1
-        elif character.isnumeric():
-            row += int(character)
-        elif character == "/":
-            col += 1
-            row = 0
-    # This fen function does not take into account the player turn
-    # this Fen function is not complete
-    # usually a fen function take into consideration all the 6 field of FEN notation
-    # but for this we only need the first field for the position
+        if character.isdigit():
+            col += int(character)
+        elif character == '/':
+            row += 1
+            col = 0
+        else:
+            if row < boardSize and col < boardSize:
+                piece = GetFenPieces(character, row, col)  
+                boardGrid[row][col] = piece
+            col += 1  
+
     return boardGrid
 
-# FEN("")
+
+
