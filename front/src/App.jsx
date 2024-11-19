@@ -58,11 +58,6 @@ export default function PlayRandomMoveEngine() {
       },
       body: JSON.stringify({ fen: game.fen() }),
     }).then((response) => {
-      console.log(
-        "🚀 ~ file: App.jsx:61 ~ calculateMove ~ response:",
-        response
-      );
-
       response.json().then((data) => {
         console.log("🚀 ~ file: App.jsx:67 ~ response.json ~ data:", data);
         safeGameMutate((game) => {
