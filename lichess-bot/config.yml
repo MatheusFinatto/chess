@@ -66,7 +66,7 @@ engine:
 
   lichess_bot_tbs: # The tablebases list here will be read by lichess-bot, not the engine.
     syzygy:
-      enabled: true # Whether or not to use local syzygy endgame tablebases.
+      enabled: false # Whether or not to use local syzygy endgame tablebases.
       paths: # Paths to Syzygy endgame tablebases.
         - "engines/syzygy"
       max_pieces: 7 # Maximum number of pieces in the endgame tablebase.

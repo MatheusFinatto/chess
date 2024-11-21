@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import chess
+import chess.polyglot
 import sys
 import os
 
@@ -11,11 +12,37 @@ from common import minimax_root, DEPTH
 
 app = Flask(__name__)
 CORS(app)
+BOOK_PATH = "../Titans.bin"
+
 
 def find_best_move(fen):
+    should_use_book = True
     board = chess.Board(fen)
-    best_move = minimax_root(DEPTH, not board.turn, board)
-    return board.san(best_move)
+
+    if not should_use_book:
+        best_move = minimax_root(DEPTH, not board.turn, board)
+        return board.san(best_move)
+    
+
+    try:
+        with chess.polyglot.open_reader(BOOK_PATH) as reader:
+            try:
+                book_move = reader.find(board)
+                if book_move:
+                    print(f"Move from book: {book_move.move}")
+                    return board.san(book_move.move)
+                else:
+                    print("No book move found, falling back to Minimax.")
+            except IndexError:
+                print("No book entry found for this position.")
+                should_use_book = False
+                best_move = minimax_root(DEPTH, not board.turn, board)
+                return board.san(best_move)
+
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+    except Exception as e:
+        print(f"Unexpected error loading opening book: {e}")
 
 
 @app.route('/move', methods=['POST'])

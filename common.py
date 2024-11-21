@@ -115,6 +115,8 @@ def evaluate_piece(piece, x, y):
 
 
 def evaluate_board(board):
+    if board.is_checkmate():
+        return 10000 if board.turn == False else -10000
     total_evaluation = 0
     for i in range(8):
         for j in range(8):
@@ -124,19 +126,24 @@ def evaluate_board(board):
     return total_evaluation
 
 
-def minimax_root(depth,  is_maximizing_player, board):
-    best_move = -9999
+def minimax_root(depth, is_maximizing_player, board):
+    best_value = -float('inf') if is_maximizing_player else float('inf')
     best_move_found = None
 
     for move in board.legal_moves:
-        board.push(move) 
-        value = minimax(depth - 1, -10000, 10000, not is_maximizing_player, board) 
+        board.push(move)
+        value = minimax(depth - 1, -float('inf'), float('inf'), not is_maximizing_player, board)
         board.pop()
-        if value >= best_move:
-            best_move = value
+
+        if is_maximizing_player and value > best_value:
+            best_value = value
+            best_move_found = move
+        elif not is_maximizing_player and value < best_value:
+            best_value = value
             best_move_found = move
 
     return best_move_found
+
 
 
 def minimax(depth, alpha, beta, is_maximizing_player, board):

@@ -3,6 +3,7 @@
 
 import chess
 import chess.engine
+import chess.polyglot
 import sys
 import os
 
@@ -12,10 +13,29 @@ sys.path.append(root_dir)
 from common import minimax_root, DEPTH
 
 
-def find_best_move(fen):
-    board = chess.Board(fen)
-    best_move = minimax_root(DEPTH, not board.turn, board)
-    return board.san(best_move)
+def find_best_move(board):
+    should_use_book = True
+    
+    if not should_use_book:
+        best_move = minimax_root(DEPTH, not board.turn, board)
+        return best_move
+
+    try:
+        with chess.polyglot.open_reader("../Titans.bin") as reader:
+            try:
+                book_move = reader.find(board)
+                print(f"Move from book: {book_move.move}")
+                return (book_move.move)
+            except IndexError:
+                print("No book entry found for this position.")
+                should_use_book = False
+                best_move = minimax_root(DEPTH, not board.turn, board)
+                return best_move
+
+    except FileNotFoundError as e:
+        print(f"File not found: {e}")
+    except Exception as e:
+        print(f"Unexpected error loading opening book: {e}")
 
 def main():
     board = chess.Board()
@@ -46,7 +66,7 @@ def main():
                 fen = " ".join(parts[fen_index:fen_index + 6])
                 board.set_fen(fen)
         elif command.startswith("go"):
-            best_move = find_best_move(board, depth=DEPTH)
+            best_move = find_best_move(board)
             print(f"bestmove {best_move}")
         else:
             pass
