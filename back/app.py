@@ -7,7 +7,7 @@ import os
 
 parent_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.append(parent_dir)
-from common import minimax_root, DEPTH
+from common import get_best_move, DEPTH
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ def find_best_move(fen):
     board = chess.Board(fen)
 
     if not should_use_book:
-        best_move = minimax_root(DEPTH, not board.turn, board)
+        best_move = get_best_move(DEPTH, not board.turn, board)
         return board.san(best_move)
     
 
@@ -36,7 +36,7 @@ def find_best_move(fen):
             except IndexError:
                 print("No book entry found for this position.")
                 should_use_book = False
-                best_move = minimax_root(DEPTH, not board.turn, board)
+                best_move = get_best_move(DEPTH, not board.turn, board)
                 return board.san(best_move)
 
     except FileNotFoundError as e:
