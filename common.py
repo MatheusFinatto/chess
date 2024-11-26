@@ -107,10 +107,13 @@ def evaluate_piece(piece, x, y):
     return get_piece_value(piece, is_white, x, y) if is_white else -get_piece_value(piece, is_white, x, y)
 
 # Somatório dos valores das peças
-def evaluate_board(board):    
+def evaluate_board(board, current_depth = 0):    
     if board.is_checkmate():
-        return 10000 if board.turn == False else -10000
+        return 10000 - (DEPTH - current_depth) if not board.turn else -10000 + (DEPTH - current_depth)
 
+    elif board.is_stalemate() or board.is_insufficient_material():
+        return 0
+    
     total_evaluation = 0
     for i in range(CHESSBOARD_SIZE):
         for j in range(CHESSBOARD_SIZE):
@@ -152,7 +155,7 @@ def get_best_move(depth, is_maximizing_player, board):
 def minimax(depth, alpha, beta, is_maximizing_player, board):
     # Quando a profundidade chegar a 0, retorna o valor do tabuleiro
     if depth == 0:
-        return -evaluate_board(board)
+        return -evaluate_board(board, current_depth = depth)
 
     # Se for a vez do jogador maximizador
     if is_maximizing_player:
