@@ -6,8 +6,8 @@
 
 <ul>
   <li>🌐 <strong>Lichess Bot</strong> para jogar contra o Stockfish diretamente no <a href="https://lichess.org/" target="_blank">Lichess</a>.</li>
-  <li>👤 <strong>Interface Front-End</strong> para partidas humanas e acesso geral.</li>
-  <li>⚙️ <strong>Back-End</strong> para gerenciar lógica e integração.</li>
+  <li>👤 <strong>Interface Front-End</strong> para partidas humanas e acesso de pessoas no geral.</li>
+  <li>⚙️ <strong>Back-End</strong> para gerenciar lógica e integração (ambiente Python).</li>
 </ul>
 
 <hr />
@@ -32,11 +32,9 @@ cd back
   
 sudo apt install python3.12-venv
 
-python3 -m venv venv
+python3 -m venv back
 
-virtualenv venv -p python3
-
-source ./venv/bin/activate
+source ./back/bin/activate
 
 pip install -r requirements.txt
 
@@ -66,12 +64,12 @@ Necessário login e senha para inicio do bot dentro do ambiente lichess!
 Portanto, essa parte não é possível ser acessada por qualquer pessoa.
 <pre>
 <code>
-  
-virtualenv venv -p python3
-  
-source ./venv/bin/activate
 
-python3 -m pip install -r requirements.txt
+python3 -m venv bot
+
+source ./bot/bin/activate
+
+pip install -r requirements.txt
 
 python lichess-bot.py
 </code>
@@ -87,12 +85,3 @@ python lichess-bot.py
   <li><strong>Algoritmos:</strong> Minimax, Alpha-Beta Pruning.</li>
   <li><strong>Integrações:</strong> Lichess API.</li>
 </ul>
-
-<hr />
-
-<h2>💡 Contribuições</h2>
-<p>Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests.</p>
-
-<hr />
-
-<p><strong>📌 Observação:</strong> Este projeto é acadêmico e visa explorar técnicas de inteligência artificial no domínio de jogos.</p>

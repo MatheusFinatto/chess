@@ -1,0 +1,6 @@
+__pycache__/
+venv/
+back/back/
+lichess-bot/bot/
+lichess-bot/__pycache__/
+front/node_modules/
