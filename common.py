@@ -1,6 +1,6 @@
 import chess
 
-DEPTH = 4
+DEPTH = 2
 CHESSBOARD_SIZE = 8
 
 pawn_eval_white = [
